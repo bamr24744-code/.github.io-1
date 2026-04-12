@@ -321,6 +321,28 @@
             margin-top: 8px;
         }
 
+        .back-btn {
+            background-color: #774606;      /* لون خلفية أخضر */
+            color: white;                   /* لون النص أبيض */
+            border: none;                   /* إزالة الحدود الافتراضية */
+            padding: 12px 24px;             /* مساحة داخلية مناسبة */
+            font-size: 14px;                /* حجم الخط */
+            font-weight: bold;              /* خط عريض */
+            border-radius: 30px;            /* حواف دائرية */
+            cursor: pointer;                /* مؤشر اليد عند التمرير */
+            transition: all 0.3s ease;      /* تأثير حركة سلس */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* ظل خفيف */
+        }
+
+        .back-btn:hover {
+            background-color: #45a049;      /* لون أغمق عند التمرير */
+            transform: scale(1.05);         /* تكبير طفيف */
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15); /* ظل أكبر */
+        }
+
+        .back-btn:active {
+            transform: scale(0.98);         /* تأثير الضغط */
+        }
 
     </style>
 </head>
@@ -336,6 +358,7 @@
             <div class="info-field"><label>اسم المتوفى</label><input type="text" id="deceasedName" value="السيد / "></div>
             <div class="info-field"><label>تاريخ الوفاة</label><input type="date" id="deathDate" value="2026-01-01"></div>
             <div class="info-field"><label>رقم القضية</label><input type="text" id="caseNumber" value="قضية رقم: "></div>
+            <button class="back-btn" onclick="window.location.href='https://bamr24744-code.github.io/'"> 🏠 Main Site </button>
             <button class="print-btn" id="printBtn">🖨️ طباعة</button>
         </div>
 
@@ -1005,7 +1028,47 @@
         return false;
     }
 
+/*
 
+    // 5.0 دالة الرد (توزيع الفائض على غير الزوجين) - مع معالجة حالة الزوجين فقط
+    function applyRad(shares, totalWealth) {
+        // فصل أصحاب الفروض (عدا الزوجين) عن باقي الورثة
+        let nonSpouseFractionHeirs = shares.filter(s => !s.isSpouse && typeof s.ratio === 'number');
+        let spouseHeirs = shares.filter(s => s.isSpouse && typeof s.ratio === 'number');
+
+        // حساب مجموع أنصبة غير الزوجين من أصحاب الفروض
+        let totalNonSpouseRatio = nonSpouseFractionHeirs.reduce((sum, s) => sum + s.ratio, 0);
+
+        // شرط الرد: لا يوجد عصبة
+        let hasResiduary = shares.some(s => s.ratio === 'عصبة' || (s.id === 'daughters' && s.type === 'daughter_with_brother'));
+
+        // ========== الحالة الخاصة: لا يوجد وارث غير الزوجين ==========
+        if (!hasResiduary && nonSpouseFractionHeirs.length === 0 && spouseHeirs.length > 0) {
+            // يوجد زوج/زوجة فقط ولا يوجد أي وارث آخر
+            // يجب رد الفائض على الزوج/الزوجة (يأخذ كل التركة)
+            let spouseTotalRatio = spouseHeirs.reduce((sum, s) => sum + s.ratio, 0);
+            if (spouseTotalRatio < 1) {
+                let radFactor = 1 / spouseTotalRatio;
+                for (let s of spouseHeirs) {
+                    s.ratio = s.ratio * radFactor;
+                }
+                return true;
+            }
+        }
+
+        // الحالة العادية: رد الفائض على غير الزوجين
+        if (!hasResiduary && totalNonSpouseRatio > 0 && totalNonSpouseRatio < 1) {
+            let spouseTotalRatio = spouseHeirs.reduce((sum, s) => sum + s.ratio, 0);
+            let remainingRatio = 1 - spouseTotalRatio;
+            let radFactor = remainingRatio / totalNonSpouseRatio;
+            for (let s of nonSpouseFractionHeirs) {
+                s.ratio = s.ratio * radFactor;
+            }
+            return true;
+        }
+        return false;
+    }
+*/
 
         //6.0 دالة توزيع العصبات والباقي بعد الفروض - النسخة المعدلة للتصنيفات الجديدة
         function distributeResidue(shares, totalWealth, params) {
