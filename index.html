@@ -31,9 +31,9 @@
             border-bottom: 4px solid #d4af37;
         }
 
-        .official-header h1 {
-            color: #f5e6c8;
-            font-size: 1.8rem;
+        .official-header h3 {
+            color: #dbe2cd;
+            font-size: 0.9rem;
             font-weight: 700;
         }
 
@@ -324,110 +324,226 @@
 
     </style>
 </head>
-<body>
-<div class="container">
-    <div class="official-header">
-        <div class="basmalah">بسم الله الرحمن الرحيم</div>
-        <h1> الميراث والوصية الواجبة وفقا للقانون المصري رقم : 71 لسنة 1946 (الاصدار الاول)</h1>
-    </div>
-
-    <div class="deceased-info">
-        <div class="info-field"><label>اسم المتوفى</label><input type="text" id="deceasedName" value="السيد / "></div>
-        <div class="info-field"><label>تاريخ الوفاة</label><input type="date" id="deathDate" value="2026-01-01"></div>
-        <div class="info-field"><label>رقم القضية</label><input type="text" id="caseNumber" value="قضية رقم: "></div>
-        <button class="print-btn" id="printBtn">🖨️ طباعة</button>
-    </div>
-
-    <div class="app-content">
-        <div class="input-section">
-            <div class="input-group"><label>💰 قيمة التركة</label><input type="number" id="estateValue" value="360000" step="any"></div>
-            
-            <! تم اضافة الوصية الواجبة هنا  >
-
-            <!-- ========== الوصية الواجبة (لأبناء الابن المتوفى) ========== -->
-            <div class="input-group">
-                <label>📜 الوصية الواجبة (أبناء الابن المتوفى)</label>
-                <div class="radio-group">
-                    <label class="radio-item">
-                        <input type="radio" name="obligatoryWill" value="none" checked> لا توجد وصية واجبة
-                    </label>
-                    <label class="radio-item">
-                        <input type="radio" name="obligatoryWill" value="sonsOfDeceasedSon"> يوجد ابن ابن متوفى
-                    </label>
-                </div>
-                <div id="grandsonsCountContainer" style="display: none; margin-top: 5px;">
-                    <label>عدد أبناء الابن المتوفى (ذكور):</label>
-                    <input type="number" id="grandsonsCount" value="1" min="0" step="1">
-                    <span style="font-size: 0.75rem; color: #7a6a4a;">(يتم توزيع الوصية عليهم بالتساوي)</span>
-                </div>
-            </div>
-            
-            <div class="input-group"><label>👨 الزوج / الزوجة</label>
-                <select id="spouseSelect">
-                    <option value="none">لا يوجد</option>
-                    <option value="husband" selected>زوج</option>
-                    <option value="wife">زوجة</option>
-                </select>
-            </div>
-            <div class="input-group"><label>👨👦 الأبناء (ذكور)</label><input type="number" id="sonsCount" value="0" min="0"></div>
-            <div class="input-group"><label>👧 البنات (إناث)</label><input type="number" id="daughtersCount" value="1" min="0"></div>
-            <div class="input-group"><label>👧 بنات الابن</label><input type="number" id="grandDaughtersCount" value="0" min="0"></div>
-            
-            <div class="input-group"><label><input type="checkbox" id="fatherAlive"> 👨 الأب</label></div>
-            <div class="input-group"><label><input type="checkbox" id="motherAlive"> 👵 الأم</label></div>
-            <div class="input-group"><label><input type="checkbox" id="grandFatherAlive"> 👴 الجد</label></div>
-            <div class="input-group"><label><input type="checkbox" id="grandMotherAlive"> 👵 الجدة</label></div>
-
-            <div class="input-group">
-                <label>👩🦰 الأخوات</label>
-                <div class="radio-group">
-                    <label class="radio-item"><input type="radio" name="sistersType" value="none" checked> لا توجد</label>
-                    <label class="radio-item"><input type="radio" name="sistersType" value="full"> شقيقات</label>
-                    <label class="radio-item"><input type="radio" name="sistersType" value="consanguine"> لأب</label>
-                </div>
-                <div id="sistersCountContainer" style="margin-top: 5px; display: none;"><input type="number" id="sistersCount" value="2" min="0" placeholder="عدد الأخوات"></div>
-            </div>
-
-            <div class="input-group"><label><input type="checkbox" id="brothersExist"> 👬 إخوة ذكور</label><input type="number" id="brothersCount" value="0" min="0" placeholder="عدد الإخوة" style="margin-top: 5px;"></div>
-
-            <hr>
-
-            <div class="input-group"><label><input type="checkbox" id="uncleExist"> 👨 العم</label></div>
-            <div class="input-group"><label><input type="checkbox" id="cousinExist"> 👨👦 ابن العم</label></div>
-            <div class="input-group"><label><input type="checkbox" id="maternalUncleExist"> 👩🦱 الأخوال</label></div>
-
-            <button class="btn-calculate" id="calculateBtn">احسب المواريث</button>
-            <button class="btn-calculate btn-reset" id="resetBtn">إعادة تعيين</button>
+<body>       
+    
+            <div class="container">
+        <div class="official-header">
+            <div class="basmalah">بسم الله الرحمن الرحيم</div>
+            <h3>الميراث والوصية الواجبة وفقاً للقانون المصري رقم : 71 لسنة 1946 (الإصدار الأول)</h3>
         </div>
 
-        <div class="result-section">
-            <div class="total-box"><div>إجمالي التركة</div><div class="amount" id="totalAmountDisplay">0</div></div>
-            <div class="result-title">جدول توزيع التركة</div>
-            <div class="table-wrapper">
-                <table class="inheritance-table">
-                    <thead><tr><th>الوارث</th><th>سبب الاستحقاق</th><th>النسبة</th><th>المبلغ</th></tr></thead>
-                    <tbody id="heirsTableBody"><tr><td colspan="4">أدخل البيانات ثم اضغط احسب</td></tr></tbody>
-                </table>
+        <div class="deceased-info">
+            <div class="info-field"><label>اسم المتوفى</label><input type="text" id="deceasedName" value="السيد / "></div>
+            <div class="info-field"><label>تاريخ الوفاة</label><input type="date" id="deathDate" value="2026-01-01"></div>
+            <div class="info-field"><label>رقم القضية</label><input type="text" id="caseNumber" value="قضية رقم: "></div>
+            <button class="print-btn" id="printBtn">🖨️ طباعة</button>
+        </div>
+
+        <div class="app-content">
+            <div class="input-section">
+                <div class="input-group"><label>💰 قيمة التركة</label><input type="number" id="estateValue" value="360000" step="any"></div>
+
+                <!-- ========== الوصية الواجبة (لأبناء الابن المتوفى) ========== -->
+                <div class="input-group">
+                    <label>📜 الوصية الواجبة (أبناء الابن المتوفى)</label>
+                    <div class="radio-group">
+                        <label class="radio-item">
+                            <input type="radio" name="obligatoryWill" value="none" checked> لا توجد وصية واجبة
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="obligatoryWill" value="sonsOfDeceasedSon"> يوجد ابن ابن متوفى
+                        </label>
+                    </div>
+                    <div id="grandsonsCountContainer" style="display: none; margin-top: 5px;">
+                        <label>عدد أبناء الابن المتوفى (ذكور):</label>
+                        <input type="number" id="grandsonsCount" value="1" min="0" step="1">
+                        <span style="font-size: 0.75rem; color: #7a6a4a;">(يتم توزيع الوصية عليهم بالتساوي)</span>
+                    </div>
+                </div>
+
+                <div class="input-group"><label>👨 الزوج / الزوجة</label>
+                    <select id="spouseSelect">
+                        <option value="none">لا يوجد</option>
+                        <option value="husband" selected >زوج</option>
+                        <option value="wife">زوجة</option>
+                    </select>
+                </div>
+                <div class="input-group"><label>👨👦 الأبناء (ذكور)</label><input type="number" id="sonsCount" value="0" min="0"></div>
+                <div class="input-group"><label>👧 البنات (إناث)</label><input type="number" id="daughtersCount" value="0" min="0"></div>
+                <div class="input-group"><label>👧 بنات الابن</label><input type="number" id="grandDaughtersCount" value="0" min="0"></div>
+
+                <div class="input-group"><label><input type="checkbox" id="fatherAlive"> 👨 الأب</label></div>
+                <div class="input-group"><label><input type="checkbox" id="motherAlive"> 👵 الأم</label></div>
+                <div class="input-group"><label><input type="checkbox" id="grandFatherAlive"> 👴 الجد</label></div>
+                <div class="input-group"><label><input type="checkbox" id="grandMotherAlive"> 👵 الجدة</label></div>
+
+                <!-- ========== الإخوة والأخوات (مفصل حسب الفقه الإسلامي والقانون المصري) ========== -->
+                <div class="input-group">
+                    <label>👩🦰 الأخوات الشقيقات</label>
+                    <input type="number" id="sistersFullCount" value="0" min="0" placeholder="عدد الأخوات الشقيقات">
+                </div>
+                <div class="input-group">
+                    <label>👩🦰 الأخوات لأب</label>
+                    <input type="number" id="sistersPaternalCount" value="0" min="0" placeholder="عدد الأخوات لأب">
+                </div>
+                <div class="input-group">
+                    <label>👬 الإخوة الأشقاء</label>
+                    <input type="number" id="brothersFullCount" value="0" min="0" placeholder="عدد الإخوة الأشقاء">
+                </div>
+                <div class="input-group">
+                    <label>👬 الإخوة لأب</label>
+                    <input type="number" id="brothersPaternalCount" value="0" min="0" placeholder="عدد الإخوة لأب">
+                </div>
+                <div class="input-group">
+                    <label>👬👩🦰 الإخوة والأخوات لأم</label>
+                    <input type="number" id="maternalSiblingsCount" value="0" min="0" placeholder="عدد الإخوة والأخوات لأم (الذكر والأنثى بالسوية)">
+                    <span style="font-size: 0.7rem; color: #7a6a4a;">(يرثون بالسوية للذكر مثل الأنثى)</span>
+                </div>
+                <hr>
+
+                <div class="input-group"><label><input type="checkbox" id="uncleExist"> 👨 العم</label></div>
+                <div class="input-group"><label><input type="checkbox" id="cousinExist"> 👨👦 ابن العم</label></div>
+                <div class="input-group"><label><input type="checkbox" id="maternalUncleExist"> 👩🦱 الأخوال</label></div>
+
+                <button class="btn-calculate" id="calculateBtn">احسب المواريث</button>
+                <button class="btn-calculate btn-reset" id="resetBtn">إعادة تعيين</button>
             </div>
-            <div id="blockedInfo" class="blocked-note" style="display:none;"></div>
-            <div class="case-status" id="caseStatus"></div>
-            <div class="document-footer">
-                <div class="signature"><span>📅 تاريخ الإصدار:</span><strong id="issueDate"></strong></div>
-                <div class="signature"><span>✍️ المحامي / الموثق:</span><span>___________________</span></div>
-                <div class="signature"><span>📜 يعتمـــد :</span><span>___________________</span></div>
+
+            <div class="result-section">
+                <div class="total-box"><div>إجمالي التركة</div><div class="amount" id="totalAmountDisplay">0</div></div>
+                <div class="result-title">جدول توزيع التركة</div>
+                <div class="table-wrapper">
+                    <table class="inheritance-table">
+                        <thead><tr><th>الوارث</th><th>سبب الاستحقاق</th><th>النسبة</th><th>المبلغ</th></tr></thead>
+                        <tbody id="heirsTableBody"><tr><td colspan="4">أدخل البيانات ثم اضغط احسب</td></tr></tbody>
+                    </table>
+                </div>
+                <div id="blockedInfo" class="blocked-note" style="display:none;"></div>
+                <div class="case-status" id="caseStatus"></div>
+                <div class="document-footer">
+                    <div class="signature"><span>📅 تاريخ الإصدار:</span><strong id="issueDate"></strong></div>
+                    <div class="signature"><span>✍️ المحامي / الموثق:</span><span>___________________</span></div>
+                    <div class="signature"><span>📜 يعتمـــد :</span><span>___________________</span></div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 <script>
-(function() {
+
+    (function() {
     // تاريخ اليوم
     document.getElementById('issueDate').innerText = new Date().toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
 
     // ================ الدوال الرئيسية المتسلسلة ================
+   
+        // 1.0 ------   الوصية الواجبة       -------------
+
+        // ========== إدارة إظهار/إخفاء حقل عدد أبناء الابن المتوفى ==========
+        function toggleGrandsonsContainer() {
+            const selected = document.querySelector('input[name="obligatoryWill"]:checked');
+            const container = document.getElementById('grandsonsCountContainer');
+            if (container) {
+                container.style.display = (selected && selected.value === 'sonsOfDeceasedSon') ? 'block' : 'none';
+            }
+        }
+        // ربط الأحداث
+        document.querySelectorAll('input[name="obligatoryWill"]').forEach(radio => {
+            radio.addEventListener('change', toggleGrandsonsContainer);
+        });
+        toggleGrandsonsContainer();
+
+        // ========== دالة حساب الوصية الواجبة (وفق القانون المصري) ==========
+        /**
+         * تحسب قيمة الوصية الواجبة بناءً على:
+         * - نصيب الأب المتوفى لو كان حياً (مع مراعاة الحجب والرد والعول)
+         * - بحد أقصى ثلث التركة
+         * @param {Object} params - معاملات الورثة (نفس params المستخدمة في الحجب)
+         * @param {number} totalWealth - قيمة التركة الإجمالية
+         * @returns {Object} { amount: number, grandsonsCount: number, deceasedSonShare: number }
+         */
+
+
+        // دالة حساب الوصية الواجبة (القانون المصري)
+        function calculateObligatoryWill(params, totalWealth) {
+            const selected = document.querySelector('input[name="obligatoryWill"]:checked');
+            if (!selected || selected.value !== 'sonsOfDeceasedSon') {
+                return { amount: 0, grandsonsCount: 0, deceasedSonShare: 0 };
+            }
+            let grandsonsCount = parseInt(document.getElementById('grandsonsCount').value) || 0;
+            if (grandsonsCount === 0) return { amount: 0, grandsonsCount: 0, deceasedSonShare: 0 };
+        
+            // 1. إنشاء نسخة مؤقتة من params مع إضافة الأب المتوفى كابن حي
+            let tempParams = { ...params };
+            tempParams.sons = (tempParams.sons || 0) + 1;
+            // 2. حساب نصيب الأب في مسألة غير عائلة (دون تطبيق العول)
+            //    نستخدم دوال البرنامج ولكن مع تجاهل العول (نحسب النسب الأصلية)
+            // التأكد من وجود الخصائص الجديدة (إذا لم تكن موجودة، نضيفها)
+            tempParams.brothersFullCount = params.brothersFullCount || 0;
+            tempParams.brothersPaternalCount = params.brothersPaternalCount || 0;
+            tempParams.sistersFullCount = params.sistersFullCount || 0;
+            tempParams.sistersPaternalCount = params.sistersPaternalCount || 0;
+            tempParams.maternalSiblingsCount = params.maternalSiblingsCount || 0;
+            
+            let heirs = [];
+            let hasChild = (tempParams.sons + tempParams.daughters) > 0;
+
+            // الزوج/الزوجة
+            if (tempParams.spouseType === 'husband') heirs.push({ id: 'husband', ratio: hasChild ? 1/4 : 1/2, isSpouse: true });
+            else if (tempParams.spouseType === 'wife') heirs.push({ id: 'wife', ratio: hasChild ? 1/8 : 1/4, isSpouse: true });
+
+            // الأب
+            if (tempParams.father) heirs.push({ id: 'father', ratio: hasChild ? 1/6 : null, isResiduary: !hasChild });
+
+            // الأم
+            if (tempParams.mother) {
+                // ---   تم التعديل --------------------------------------              
+                let hasSiblings = (tempParams.brothersFullCount > 0) || (tempParams.brothersPaternalCount > 0) || 
+                  (tempParams.sistersFullCount > 0) || (tempParams.sistersPaternalCount > 0) ||
+                  (tempParams.maternalSiblingsCount > 0);
+                heirs.push({ id: 'mother', ratio: (hasChild || hasSiblings) ? 1/6 : 1/3 });
+            }
+            
+            // البنات (فرض)
+            if (tempParams.daughters > 0 && tempParams.sons === 0) {
+                heirs.push({ id: 'daughters', ratio: tempParams.daughters === 1 ? 1/2 : 2/3, count: tempParams.daughters });
+            }
+
+            // الأبناء (الذكور) - نضيف الأب المتوفى هنا
+            heirs.push({ id: 'sons', count: tempParams.sons, isResiduary: true });
+
+            // حساب نصيب الأب من خلال توزيع التركة بدون عول
+            // أولاً: حساب مجموع الفروض
+            let totalFractions = 0;
+            let fractionHeirs = heirs.filter(h => h.ratio !== undefined && typeof h.ratio === 'number');
+            for (let h of fractionHeirs) totalFractions += h.ratio;
+
+            let residue = 1 - totalFractions;
+            if (residue < 0) residue = 0;  // العول سيحدث لاحقاً، لكننا نحتاج نصيب الأب قبل العول
+
+            // توزيع الباقي على العصبات (الأبناء)
+            let sonShare = 0;
+            if (residue > 0) {
+                let totalShares = (tempParams.sons * 2) + (tempParams.daughters * 1);
+                let perShare = residue / totalShares;
+                sonShare = perShare * 2;  // لكل ابن
+            }
+
+            let deceasedSonShareValue = sonShare * totalWealth;
+            let oneThirdWealth = totalWealth / 3;
+            let mandatoryAmount = Math.min(deceasedSonShareValue, oneThirdWealth);
+            if (mandatoryAmount < 0.01) mandatoryAmount = 0;
+
+            return {
+                amount: mandatoryAmount,
+                grandsonsCount: grandsonsCount,
+                deceasedSonShare: deceasedSonShareValue
+            };
+        }
     
-    // 1. دالة الحجب (ترشيح الورثة المستحقين مع تسجيل المحجوبين)
+
+   
+    // 2.0 دالة الحجب (ترشيح الورثة المستحقين مع تسجيل المحجوبين) - النسخة المعدلة
     function applyHajb(params) {
         let heirs = [];
         let blocked = [];
@@ -473,7 +589,7 @@
             blocked.push('الجدة (محجوبة بالأم)');
         }
 
-        // ========== الأبناء (الذكور) - يوضع هنا بعد الجدة وقبل البنات ==========
+        // ========== الأبناء (الذكور) ==========
         if (params.sons > 0) {
             heirs.push({ 
                 id: 'sons', 
@@ -488,7 +604,6 @@
         // ========== البنات ==========
         if (params.daughters > 0) {
             if (!hasSon) {
-                // بنات بدون أبناء: يأخذن فرضاً
                 heirs.push({ 
                     id: 'daughters', 
                     name: params.daughters === 1 ? 'البنت' : 'البنات', 
@@ -497,7 +612,6 @@
                     isSpouse: false 
                 });
             } else {
-                // بنات مع أبناء: يصبحن عصبة بالغير
                 heirs.push({ 
                     id: 'daughters', 
                     name: params.daughters === 1 ? 'البنت' : 'البنات', 
@@ -534,58 +648,112 @@
             }
         }
 
-        // ========== الإخوة والأخوات ==========
-        let hasSon_forSiblings = params.sons > 0;
-        let hasFather_forSiblings = params.father;
-        let hasGrandfather_forSiblings = params.grandfather;
+        // ========== الإخوة والأخوات (التصنيف الجديد) ==========
+        // قراءة القيم من params (المفترض أن تكون موجودة)
+        let sistersFullCount = params.sistersFullCount || 0;
+        let sistersPaternalCount = params.sistersPaternalCount || 0;
+        let brothersFullCount = params.brothersFullCount || 0;
+        let brothersPaternalCount = params.brothersPaternalCount || 0;
+        let maternalSiblingsCount = params.maternalSiblingsCount || 0;
 
-        let siblingsBlocked = hasSon_forSiblings || hasFather_forSiblings || hasGrandfather_forSiblings;
+        // الحجب الأساسي للإخوة والأخوات (باستثناء الإخوة لأم)
+        let hasMaleChildForSiblings = hasSon; // الابن يحجب الإخوة والأخوات (عدا الإخوة لأم)
+        let siblingsBlocked = hasMaleChildForSiblings || hasFather || hasGrandfather;
 
-        let sistersType = params.sistersType;
-        let sistersCount = (sistersType !== 'none') ? params.sistersCount : 0;
-        let brothersCount = params.brothersExist ? params.brothersCount : 0;
-
-        // معالجة الإخوة الذكور
-        if (brothersCount > 0) {
-            if (!siblingsBlocked) {
+        // ========== معالجة الإخوة والأخوات لأم (يورثون بالسوية ولا يحجبهم إلا الفرع الوارث أو الأب أو الجد) ==========
+        if (maternalSiblingsCount > 0) {
+            // الإخوة لأم لا يحجبهم الإخوة الآخرون، ولكن يحجبهم وجود الابن، بنت الابن، الأب، الجد
+            let maternalBlocked = hasChild || hasFather || hasGrandfather;
+            if (!maternalBlocked) {
+                // يضافون كفئة واحدة (لأم) بغض النظر عن الجنس
                 heirs.push({ 
-                    id: 'brothers', 
-                    name: brothersCount === 1 ? 'الأخ' : 'الإخوة', 
-                    count: brothersCount, 
-                    type: 'brother', 
-                    isSpouse: false 
+                    id: 'maternalSiblings', 
+                    name: maternalSiblingsCount === 1 ? 'الأخ لأم' : 'الإخوة والأخوات لأم', 
+                    count: maternalSiblingsCount, 
+                    type: 'maternal', 
+                    isSpouse: false,
+                    isMaternal: true
                 });
             } else {
-                let reason = hasSon_forSiblings ? 'بالابن' : (hasFather_forSiblings ? 'بالأب' : 'بالجد');
-                blocked.push(`الإخوة (${brothersCount}) (محجوبون ${reason})`);
-        
-            }    
-
-        }
-        
-        // معالجة الأخوات
-        if (sistersCount > 0 && sistersType !== 'none') {
-            if (!siblingsBlocked) {
-                let sisterName = (sistersType === 'full') ? 
-                    (sistersCount === 1 ? 'الأخت الشقيقة' : 'الأخوات الشقيقات') : 
-                    (sistersCount === 1 ? 'الأخت لأب' : 'الأخوات لأب');
-
-                heirs.push({ 
-                    id: 'sisters', 
-                    name: sisterName, 
-                    count: sistersCount, 
-                    sisterType: sistersType, 
-                    type: 'sister', 
-                    isSpouse: false 
-                });
-            } else {
-                let reason = hasSon_forSiblings ? 'بالابن' : (hasFather_forSiblings ? 'بالأب' : 'بالجد');
-                blocked.push(`${sistersCount === 1 ? 'الأخت' : 'الأخوات'} (محجوبات ${reason})`);
+                let reason = hasChild ? 'بالأبناء أو البنات' : (hasFather ? 'بالأب' : 'بالجد');
+                blocked.push(`الإخوة والأخوات لأم (محجوبون ${reason})`);
             }
         }
 
-        // ========== العصبات البعيدة ==========
-        let hasNearResiduaries = hasSon || hasFather || hasGrandfather || brothersCount > 0;
+        // ========== معالجة الإخوة الأشقاء والأخوات الشقيقات ==========
+        let totalFullBrothers = brothersFullCount;
+        let totalFullSisters = sistersFullCount;
+        let totalPaternalBrothers = brothersPaternalCount;
+        let totalPaternalSisters = sistersPaternalCount;
+
+        // إذا وجد أخ شقيق، فإنه يحجب الإخوة لأب والأخوات لأب
+        let hasFullBrother = totalFullBrothers > 0;
+
+        // الإخوة والأخوات الأشقاء (يدخلون معاً في العصبة)
+        if (totalFullBrothers > 0 || totalFullSisters > 0) {
+            if (!siblingsBlocked) {
+                // إضافة الإخوة الأشقاء
+                if (totalFullBrothers > 0) {
+                    heirs.push({ 
+                        id: 'brothers', 
+                        name: totalFullBrothers === 1 ? 'الأخ الشقيق' : 'الإخوة الأشقاء', 
+                        count: totalFullBrothers, 
+                        type: 'full_brother', 
+                        isSpouse: false,
+                        isResiduary: true
+                    });
+                }
+                // إضافة الأخوات الشقيقات (قد يصبحن عصبة مع الإخوة أو يأخذن فرضاً حسب السياق)
+                if (totalFullSisters > 0) {
+                    heirs.push({ 
+                        id: 'sisters', 
+                        name: totalFullSisters === 1 ? 'الأخت الشقيقة' : 'الأخوات الشقيقات', 
+                        count: totalFullSisters, 
+                        sisterType: 'full', 
+                        type: 'sister', 
+                        isSpouse: false 
+                    });
+                }
+            } else {
+                if (totalFullBrothers > 0) blocked.push(`الإخوة الأشقاء (محجوبون ${hasSon ? 'بالابن' : (hasFather ? 'بالأب' : 'بالجد')})`);
+                if (totalFullSisters > 0) blocked.push(`الأخوات الشقيقات (محجوبات ${hasSon ? 'بالابن' : (hasFather ? 'بالأب' : 'بالجد')})`);
+            }
+        }
+
+        // الإخوة والأخوات لأب (يُحجبون بوجود الأخ الشقيق)
+        if ((totalPaternalBrothers > 0 || totalPaternalSisters > 0) && !hasFullBrother) {
+            if (!siblingsBlocked) {
+                if (totalPaternalBrothers > 0) {
+                    heirs.push({ 
+                        id: 'brothers_paternal', 
+                        name: totalPaternalBrothers === 1 ? 'الأخ لأب' : 'الإخوة لأب', 
+                        count: totalPaternalBrothers, 
+                        type: 'paternal_brother', 
+                        isSpouse: false,
+                        isResiduary: true
+                    });
+                }
+                if (totalPaternalSisters > 0) {
+                    heirs.push({ 
+                        id: 'sisters_paternal', 
+                        name: totalPaternalSisters === 1 ? 'الأخت لأب' : 'الأخوات لأب', 
+                        count: totalPaternalSisters, 
+                        sisterType: 'paternal', 
+                        type: 'sister', 
+                        isSpouse: false 
+                    });
+                }
+            } else {
+                if (totalPaternalBrothers > 0) blocked.push(`الإخوة لأب (محجوبون ${hasSon ? 'بالابن' : (hasFather ? 'بالأب' : 'بالجد')})`);
+                if (totalPaternalSisters > 0) blocked.push(`الأخوات لأب (محجوبات ${hasSon ? 'بالابن' : (hasFather ? 'بالأب' : 'بالجد')})`);
+            }
+        } else if ((totalPaternalBrothers > 0 || totalPaternalSisters > 0) && hasFullBrother) {
+            // وجود أخ شقيق يحجب الإخوة لأب والأخوات لأب
+            blocked.push(`الإخوة والأخوات لأب (محجوبون بالأخ الشقيق)`);
+        }
+
+        // ========== العصبات البعيدة (العم، ابن العم، الأخوال) ==========
+        let hasNearResiduaries = hasSon || hasFather || hasGrandfather || (totalFullBrothers > 0) || (totalPaternalBrothers > 0);
 
         // العم
         if (params.uncleExist) {
@@ -608,7 +776,7 @@
 
         // الأخوال
         if (params.maternalUncleExist) {
-            if (!hasChild && !hasFather && !hasGrandfather && !brothersCount && !params.uncleExist && !params.cousinExist) {
+            if (!hasChild && !hasFather && !hasGrandfather && (totalFullBrothers === 0) && (totalPaternalBrothers === 0) && !params.uncleExist && !params.cousinExist) {
                 heirs.push({ id: 'maternalUncle', name: 'الأخوال', type: 'maternalUncle', isSpouse: false });
             } else {
                 let reason = hasChild ? 'بالأبناء أو البنات' : 'بالأقربين';
@@ -617,10 +785,10 @@
         }
 
         return { heirs, blocked };
-    }
-    
-    
-   // 2. دالة حساب الفروض والأنصبة الأولية (مع مراعاة حجب النقصان)
+    } 
+   
+   
+    // 3.0 دالة حساب الفروض والأنصبة الأولية (مع مراعاة حجب النقصان) - النسخة المعدلة
     function calculateShares(heirsList, params, totalWealth) {
         let shares = [];
         let hasChild = (params.sons + params.daughters) > 0;
@@ -646,7 +814,10 @@
 
             // ========== الأم ==========
             else if(heir.id === 'mother') {
-                let hasSiblings = (params.brothersExist && params.brothersCount > 0) || (params.sistersType !== 'none' && params.sistersCount > 0);
+                // وجود أي من الإخوة أو الأخوات (بجميع أنواعهم) يحجب الأم من الثلث إلى السدس
+                let hasSiblings = (params.brothersFullCount > 0) || (params.brothersPaternalCount > 0) || 
+                                  (params.sistersFullCount > 0) || (params.sistersPaternalCount > 0) ||
+                                  (params.maternalSiblingsCount > 0);
                 share.ratio = (hasChild || hasSiblings) ? 1/6 : 1/3;
             }
 
@@ -660,9 +831,8 @@
                 share.ratio = 1/6;
             }
 
-            // ========== الأبناء (الذكور) - المطلوب ==========
+            // ========== الأبناء ==========
             else if(heir.id === 'sons') {
-                // الأبناء عصبات بالنفس
                 share.ratio = 'عصبة';
                 share.isResiduary = true;
             }
@@ -670,10 +840,8 @@
             // ========== البنات ==========
             else if(heir.id === 'daughters') {
                 if(heir.type === 'daughter') {
-                    // بنات بدون أبناء: يأخذن فرضاً
                     share.ratio = (heir.count === 1) ? 1/2 : 2/3;
                 } else if(heir.type === 'daughter_with_brother') {
-                    // بنات مع أبناء: عصبة بالغير
                     share.ratio = 'عصبة';
                 }
             }
@@ -687,29 +855,77 @@
                 }
             }
 
-            // ========== الإخوة الذكور ==========
-            else if(heir.id === 'brothers') {
-                // الإخوة الذكور عصبات بالنفس
-                share.ratio = 'عصبة';
+            // ========== الإخوة والأخوات لأم (يرثون بالسوية) ==========
+            else if(heir.id === 'maternalSiblings') {
+                // فرض السدس للفرد، والثلث للجماعة (2 فأكثر)
+                if (heir.count === 1) {
+                    share.ratio = 1/6;
+                } else {
+                    share.ratio = 1/3;
+                }
             }
 
-            // ========== الأخوات ==========
+            // ========== الإخوة الأشقاء ==========
+            else if(heir.id === 'brothers') {
+                share.ratio = 'عصبة';
+                share.isResiduary = true;
+            }
+
+            // ========== الأخوات الشقيقات ==========
             else if(heir.id === 'sisters') {
                 let hasDaughters = params.daughters > 0;
                 let hasSon = params.sons > 0;
                 let hasFather = params.father;
                 let hasGrandfather = params.grandfather;
-                let hasBrothers = params.brothersExist && params.brothersCount > 0;
+                let hasFullBrothers = (params.brothersFullCount > 0);
+                let hasPaternalBrothers = (params.brothersPaternalCount > 0);
 
-                // البنت أو بنت الابن تحول الأخت من فرض إلى عصبة (عصبة مع الغير)
-                if(hasDaughters && !hasSon && !hasFather && !hasGrandfather) {
-                    share.ratio = 'عصبة';  // تصبح عصبة مع البنت
+                // إذا كان هناك أخ شقيق، تصبح الأخت عصبة بالغير
+                if (hasFullBrothers) {
+                    share.ratio = 'عصبة';
                 }
-                else if(hasBrothers) {
-                    share.ratio = 'عصبة';  // عصبة بالغير مع الأخ
+                // إذا كان هناك بنت ولا ابن ولا أب ولا جد، تصبح الأخت عصبة مع البنت
+                else if(hasDaughters && !hasSon && !hasFather && !hasGrandfather) {
+                    share.ratio = 'عصبة';
                 }
                 else {
-                    // لا يوجد عاصب، تأخذ فرضها
+                    // فرض النصف أو الثلثان
+                    share.ratio = (heir.count === 1) ? 1/2 : 2/3;
+                }
+            }
+
+            // ========== الإخوة لأب ==========
+            else if(heir.id === 'brothers_paternal') {
+                // الإخوة لأب عصبات بالنفس، ولكن يحجبهم الأخ الشقيق (لن يصلوا إلى هنا إذا كان هناك أخ شقيق)
+                share.ratio = 'عصبة';
+                share.isResiduary = true;
+            }
+
+            // ========== الأخوات لأب ==========
+            else if(heir.id === 'sisters_paternal') {
+                let hasDaughters = params.daughters > 0;
+                let hasSon = params.sons > 0;
+                let hasFather = params.father;
+                let hasGrandfather = params.grandfather;
+                let hasFullBrothers = (params.brothersFullCount > 0);
+                let hasPaternalBrothers = (params.brothersPaternalCount > 0);
+                let hasFullSisters = (params.sistersFullCount > 0);
+
+                // إذا كان هناك أخ شقيق، الأخت لأب محجوبة (لن تصل إلى هنا أصلاً)
+                // إذا كان هناك أخ لأب، تصبح عصبة بالغير
+                if (hasPaternalBrothers) {
+                    share.ratio = 'عصبة';
+                }
+                // إذا كان هناك بنت ولا ابن ولا أب ولا جد، تصبح عصبة مع البنت
+                else if(hasDaughters && !hasSon && !hasFather && !hasGrandfather) {
+                    share.ratio = 'عصبة';
+                }
+                // حالة خاصة: إذا وجدت أخت شقيقة واحدة ولا يوجد أخ لأب، ترث الأخت لأب السدس
+                else if (hasFullSisters === 1 && !hasPaternalBrothers) {
+                    share.ratio = 1/6;
+                }
+                else {
+                    // فرض النصف أو الثلثان
                     share.ratio = (heir.count === 1) ? 1/2 : 2/3;
                 }
             }
@@ -718,17 +934,19 @@
             else if(heir.id === 'uncle' || heir.id === 'cousin' || heir.id === 'maternalUncle') {
                 share.ratio = 'عصبة';
             }
-            //     الخزانة العامة تم اضافته   ///
+
+            // ========== الخزانة العامة ==========
             else if(heir.id === 'treasury' || heir.isTreasury) {
-            share.ratio = 1;  // الخزانة العامة تأخذ كل التركة
+                share.ratio = 1;
             }
-           
+
             shares.push(share);
         }
         return shares;
-    } 
+    }
 
-    // 3. دالة معالجة العول (تعديل النسب إذا زادت الفروض عن الواحد الصحيح)
+
+    // 4.0 دالة معالجة العول (تعديل النسب إذا زادت الفروض عن الواحد الصحيح)
         function applyAwl(shares) {
         let totalRatio = 0;
         let ratioShares = shares.filter(s => typeof s.ratio === 'number');
@@ -747,370 +965,321 @@
         return { isAwl: false };
     }
    
-    // 4. دالة الرد (توزيع الفائض على غير الزوجين) - بعد التعديل
-        function applyRad(shares, totalWealth) {
-            // فصل أصحاب الفروض (عدا الزوجين) عن باقي الورثة
-            let nonSpouseFractionHeirs = shares.filter(s => !s.isSpouse && typeof s.ratio === 'number');
-            let spouseHeirs = shares.filter(s => s.isSpouse && typeof s.ratio === 'number');
 
-            // حساب مجموع أنصبة غير الزوجين من أصحاب الفروض
-            let totalNonSpouseRatio = nonSpouseFractionHeirs.reduce((sum, s) => sum + s.ratio, 0);
-        
-            // شرط الرد: لا يوجد عصبة، ومجموع أنصبة غير الزوجين أقل من 1، وأقل من الواحد الصحيح
-            let hasResiduary = shares.some(s => s.ratio === 'عصبة' || s.id === 'daughters' && s.type === 'daughter_with_brother');
+    // 5.0 دالة الرد (توزيع الفائض على غير الزوجين) - مع معالجة حالة الزوجين فقط
+    function applyRad(shares, totalWealth) {
+        // فصل أصحاب الفروض (عدا الزوجين) عن باقي الورثة
+        let nonSpouseFractionHeirs = shares.filter(s => !s.isSpouse && typeof s.ratio === 'number');
+        let spouseHeirs = shares.filter(s => s.isSpouse && typeof s.ratio === 'number');
 
-            if (!hasResiduary && totalNonSpouseRatio > 0 && totalNonSpouseRatio < 1) {
-                // حساب قيمة ما أخذه الزوج/الزوجة من التركة
-                let spouseTotalRatio = spouseHeirs.reduce((sum, s) => sum + s.ratio, 0);
-                // المتبقي بعد الزوجين يقسم على أصحاب الفروض الآخرين بنسبة أنصبتهم
-                let remainingRatio = 1 - spouseTotalRatio;
-                let radFactor = remainingRatio / totalNonSpouseRatio;
+        // حساب مجموع أنصبة غير الزوجين من أصحاب الفروض
+        let totalNonSpouseRatio = nonSpouseFractionHeirs.reduce((sum, s) => sum + s.ratio, 0);
 
-                for (let s of nonSpouseFractionHeirs) {
+        // شرط الرد: لا يوجد عصبة
+        let hasResiduary = shares.some(s => s.ratio === 'عصبة' || (s.id === 'daughters' && s.type === 'daughter_with_brother'));
+
+        // ========== الحالة الخاصة: لا يوجد وارث غير الزوجين ==========
+        if (!hasResiduary && nonSpouseFractionHeirs.length === 0 && spouseHeirs.length > 0) {
+            // يوجد زوج/زوجة فقط ولا يوجد أي وارث آخر
+            // يجب رد الفائض على الزوج/الزوجة (يأخذ كل التركة)
+            let spouseTotalRatio = spouseHeirs.reduce((sum, s) => sum + s.ratio, 0);
+            if (spouseTotalRatio < 1) {
+                let radFactor = 1 / spouseTotalRatio;
+                for (let s of spouseHeirs) {
                     s.ratio = s.ratio * radFactor;
                 }
                 return true;
             }
-            return false;
         }
 
-        // 5. دالة توزيع العصبات والباقي بعد الفروض - بعد التعديل (نسخة مصححة)
+        // الحالة العادية: رد الفائض على غير الزوجين
+        if (!hasResiduary && totalNonSpouseRatio > 0 && totalNonSpouseRatio < 1) {
+            let spouseTotalRatio = spouseHeirs.reduce((sum, s) => sum + s.ratio, 0);
+            let remainingRatio = 1 - spouseTotalRatio;
+            let radFactor = remainingRatio / totalNonSpouseRatio;
+            for (let s of nonSpouseFractionHeirs) {
+                s.ratio = s.ratio * radFactor;
+            }
+            return true;
+        }
+        return false;
+    }
+
+
+
+        //6.0 دالة توزيع العصبات والباقي بعد الفروض - النسخة المعدلة للتصنيفات الجديدة
         function distributeResidue(shares, totalWealth, params) {
             // حساب مجموع الأنصبة المحددة كأرقام
             let totalAssignedRatio = shares.filter(s => typeof s.ratio === 'number').reduce((sum, s) => sum + s.ratio, 0);
             let residueRatio = 1 - totalAssignedRatio;
-        
             if (residueRatio <= 0.0001) return shares;
         
-            // البحث عن العصبات (بما في ذلك الأخوات اللواتي تحولن إلى عصبة مع البنات)
+            // البحث عن العصبات (جميع من لديه ratio === 'عصبة')
             let residuaries = shares.filter(s => s.ratio === 'عصبة');
             if (residuaries.length === 0) return shares;
         
-            let sons = params.sons;
-            let daughters = params.daughters;
-            let brothers = params.brothersExist ? params.brothersCount : 0;
-            let sistersCount = (params.sistersType !== 'none') ? params.sistersCount : 0;
-            let hasSistersAsResiduaries = residuaries.some(s => s.id === 'sisters');
-            let hasFatherC = shares.find(s => s.id === 'father' && s.ratio === 'عصبة');
-            let hasGrandC = shares.find(s => s.id === 'grandfather' && s.ratio === 'عصبة');
-            let hasFather = params.father;        // للحالة 4
-            let hasGrandfather = params.grandfather; // للحالة 4
-            let totalResidueAmount = residueRatio * totalWealth;       
+            // قراءة المتغيرات الجديدة من params
+            let sons = params.sons || 0;
+            let daughters = params.daughters || 0;
+
+            // الإخوة والأخوات لأم (ليسوا عصبة، لكن قد يكون لهم نصيب محدد، نتعامل معهم في الفروض فقط)
+            // لا داعي لمعالجتهم هنا لأنهم ليسوا عصبة
+
+            // العصبات من الإخوة والأخوات (حسب الأولوية)
+            let fullBrothers = params.brothersFullCount || 0;      // إخوة أشقاء
+            let fullSisters = params.sistersFullCount || 0;       // أخوات شقيقات (قد يكن عصبة مع البنات أو مع الإخوة)
+            let paternalBrothers = params.brothersPaternalCount || 0; // إخوة لأب
+            let paternalSisters = params.sistersPaternalCount || 0;   // أخوات لأب (قد يكن عصبة مع البنات أو مع الإخوة لأب)
+
+            let totalResidueAmount = residueRatio * totalWealth;
             let distributed = false;
         
             // ========== الحالة 1: الأبناء (الذكور) عصبة بالنفس ==========
             if (sons > 0) {
                 let totalShares = (sons * 2) + (daughters * 1);
                 let perShare = totalResidueAmount / totalShares;
-            
-                // توزيع على الأبناء
                 for (let s of shares) {
                     if (s.id === 'sons') {
                         let amt = perShare * 2 * s.count;
                         s.ratio = amt / totalWealth;
                         distributed = true;
                     }
-                }
-            
-                // توزيع على البنات (إذا كن مع الأبناء)
-                if (daughters > 0) {
-                    for (let s of shares) {
-                        if (s.id === 'daughters' && s.type === 'daughter_with_brother') {
-                            let amt = perShare * 1 * s.count;
-                            s.ratio = amt / totalWealth;
-                            distributed = true;
-                        }
+                    if (s.id === 'daughters' && s.type === 'daughter_with_brother') {
+                        let amt = perShare * 1 * s.count;
+                        s.ratio = amt / totalWealth;
+                        distributed = true;
                     }
                 }
+                return shares; // تم التوزيع، نخرج مباشرة
             }
         
-            // ========== الحالة 2: الأخوات كعصبة مع البنات ==========
-            
-            else if (hasSistersAsResiduaries && daughters > 0 && sons === 0 && brothers === 0) {    
+            // ========== الحالة 2: الأب أو الجد عصبة ==========
+            let hasFatherC = shares.find(s => s.id === 'father' && s.ratio === 'عصبة');
+            let hasGrandC = shares.find(s => s.id === 'grandfather' && s.ratio === 'عصبة');
+            if (hasFatherC || hasGrandC) {
+                let residueHeir = hasFatherC || hasGrandC;
+                residueHeir.ratio = residueRatio;
+                return shares;
+            }
+        
+            // ========== الحالة 3: الإخوة الأشقاء (مع أخواتهم الشقيقات) ==========
+            if (fullBrothers > 0 || fullSisters > 0) {
+                let totalShares = (fullBrothers * 2) + (fullSisters * 1);
+                let perShare = totalResidueAmount / totalShares;
+                // توزيع على الإخوة الأشقاء
+                for (let s of shares) {
+                    if (s.id === 'brothers') {
+                        s.ratio = (perShare * 2 * s.count) / totalWealth;
+                        distributed = true;
+                    }
+                    if (s.id === 'sisters' && s.sisterType === 'full') {
+                        s.ratio = (perShare * 1 * s.count) / totalWealth;
+                        distributed = true;
+                    }
+                }
+                if (distributed) return shares;
+            }
+        
+            // ========== الحالة 4: الإخوة لأب (مع أخواتهم لأب) ==========
+            if (paternalBrothers > 0 || paternalSisters > 0) {
+                let totalShares = (paternalBrothers * 2) + (paternalSisters * 1);
+                let perShare = totalResidueAmount / totalShares;
+                for (let s of shares) {
+                    if (s.id === 'brothers_paternal') {
+                        s.ratio = (perShare * 2 * s.count) / totalWealth;
+                        distributed = true;
+                    }
+                    if (s.id === 'sisters_paternal') {
+                        s.ratio = (perShare * 1 * s.count) / totalWealth;
+                        distributed = true;
+                    }
+                }
+                if (distributed) return shares;
+            }
+        
+            // ========== الحالة 5: الأخوات كعصبة مع البنات (دون إخوة) ==========
+            // هذه الحالة تخص الأخوات الشقيقات أو لأب إذا لم يوجد إخوة
+            let hasSistersAsResiduaries = residuaries.some(s => s.id === 'sisters' || s.id === 'sisters_paternal');
+            if (hasSistersAsResiduaries && daughters > 0 && sons === 0 && fullBrothers === 0 && paternalBrothers === 0) {
+                // جمع عدد الأخوات العصبات
+                let sistersCount = (fullSisters + paternalSisters);
                 if (sistersCount > 0) {
                     let perShare = totalResidueAmount / sistersCount;
                     for (let s of shares) {
-                        if (s.id === 'sisters') {
+                        if ((s.id === 'sisters' && s.sisterType === 'full') || s.id === 'sisters_paternal') {
                             s.ratio = (perShare * s.count) / totalWealth;
                             distributed = true;
                         }
                     }
+                    if (distributed) return shares;
                 }
-            }
-        
-            // ========== الحالة 3: الإخوة والأخوات معاً (عصبة بالغير) ==========
-            else if ((brothers > 0 || sistersCount > 0) && sons === 0 && !params.father && !params.grandfather) {
-                let totalShares = (brothers * 2) + (sistersCount * 1);
-                if (totalShares > 0) {
-                    let perShare = totalResidueAmount / totalShares;
-                    for (let s of shares) {
-                        if (s.id === 'brothers') {
-                            s.ratio = (perShare * 2 * s.count) / totalWealth;
-                        }
-                        if (s.id === 'sisters') {
-                            s.ratio = (perShare * 1 * s.count) / totalWealth;
-                        }
-                    }
-                    distributed = true;
-                }
-            }
-        
-
-            // ========== الحالة الجديدة: أخ + بنت + أخت (عصبة بالغير) ==========
-            
-            // ... بعد الحالة 3 (الإخوة والأخوات معاً)
-
-            // ========== الحالة الجديدة: أخ + بنت + أخت ==========
-            else if (brothers > 0 && daughters > 0 && sistersCount > 0 && sons === 0 && !params.father && !params.grandfather) {
-                let totalShares = (brothers * 2) + (daughters * 1) + (sistersCount * 1);
-                if (totalShares > 0) {
-                    let perShare = totalResidueAmount / totalShares;
-                    for (let s of shares) {
-                        if (s.id === 'brothers') {
-                            s.ratio = (perShare * 2 * s.count) / totalWealth;
-                        }
-                        if (s.id === 'daughters') {
-                            s.ratio = (perShare * 1 * s.count) / totalWealth;
-                        }
-                        if (s.id === 'sisters') {
-                            s.ratio = (perShare * 1 * s.count) / totalWealth;
-                        }
-                    }
-                    distributed = true;
-                }
-            }
-
-            
-            
-            // ========== الحالة 4: أخ مع بنت (عصبة بالغير) ==========
-            else if (brothers > 0 && daughters > 0 && sons === 0 && !hasFather && !hasGrandfather) {
-                for (let s of shares) {
-                    if (s.id === 'brothers') {
-                        s.ratio = residueRatio;
-                        s.isResiduary = true;
-                        distributed = true;
-                    }
-                }
-            }
-        
-            // ========== الحالة 5: الأب أو الجد عصبة ==========
-            else if (hasFatherC || hasGrandC) {
-                let residueHeir = hasFatherC || hasGrandC;
-                residueHeir.ratio = residueRatio;
-                distributed = true;
             }
         
             // ========== الحالة 6: العم أو ابن العم أو الأخوال ==========
-            else {
-                let distant = shares.find(s => s.id === 'uncle' || s.id === 'cousin' || s.id === 'maternalUncle');
-                if (distant) {
-                    distant.ratio = residueRatio;
-                    distributed = true;
-                }
+            let distant = shares.find(s => s.id === 'uncle' || s.id === 'cousin' || s.id === 'maternalUncle');
+            if (distant) {
+                distant.ratio = residueRatio;
+                distributed = true;
+                return shares;
             }
         
+            // ========== الحالة 7: الخزانة العامة ==========
             if (!distributed && residueRatio > 0) {
                 shares.push({ name: 'الخزانة العامة', ratio: residueRatio, isTreasury: true });
             }
             return shares;
         }
 
-        // 5.5 ------   الوصية الواجبة       -------------
 
-        // ========== إدارة إظهار/إخفاء حقل عدد أبناء الابن المتوفى ==========
-        function toggleGrandsonsContainer() {
-            const selected = document.querySelector('input[name="obligatoryWill"]:checked');
-            const container = document.getElementById('grandsonsCountContainer');
-            if (container) {
-                container.style.display = (selected && selected.value === 'sonsOfDeceasedSon') ? 'block' : 'none';
+    // 7.0 دالة توليد الأسباب وبيان حالة المسألة (النسخة المعدلة)
+    function generateReasonsAndStatus(shares, params, isAwl, isRad) {
+        let statusMsg = '';
+        if(isAwl) {
+            statusMsg = '⚠️ عول: عالت المسألة، تم توزيع التركة بنسبة العول.';
+        }
+        else if(isRad) {
+            // التحقق من حالة انفراد الزوجين فقط
+            let hasOnlySpouse = shares.length === 1 && (shares[0].id === 'husband' || shares[0].id === 'wife');
+            if (hasOnlySpouse) {
+                statusMsg = '✅ رد: انفراد أحد الزوجين، أخذ كل التركة (فرضاً ورداً).';
+            } else {
+                statusMsg = '✅ رد: رُدَّ الباقي على أصحاب الفروض (عدا الزوجين).';
             }
         }
-        // ربط الأحداث
-        document.querySelectorAll('input[name="obligatoryWill"]').forEach(radio => {
-            radio.addEventListener('change', toggleGrandsonsContainer);
-        });
-        toggleGrandsonsContainer();
-
-        // ========== دالة حساب الوصية الواجبة (وفق القانون المصري) ==========
-        /**
-         * تحسب قيمة الوصية الواجبة بناءً على:
-         * - نصيب الأب المتوفى لو كان حياً (مع مراعاة الحجب والرد والعول)
-         * - بحد أقصى ثلث التركة
-         * @param {Object} params - معاملات الورثة (نفس params المستخدمة في الحجب)
-         * @param {number} totalWealth - قيمة التركة الإجمالية
-         * @returns {Object} { amount: number, grandsonsCount: number, deceasedSonShare: number }
-         */
-
-
-        // دالة حساب الوصية الواجبة (القانون المصري)
-        function calculateObligatoryWill(params, totalWealth) {
-            const selected = document.querySelector('input[name="obligatoryWill"]:checked');
-            if (!selected || selected.value !== 'sonsOfDeceasedSon') {
-                return { amount: 0, grandsonsCount: 0, deceasedSonShare: 0 };
-            }
-            let grandsonsCount = parseInt(document.getElementById('grandsonsCount').value) || 0;
-            if (grandsonsCount === 0) return { amount: 0, grandsonsCount: 0, deceasedSonShare: 0 };
-        
-            // 1. إنشاء نسخة مؤقتة من params مع إضافة الأب المتوفى كابن حي
-            let tempParams = { ...params };
-            tempParams.sons = (tempParams.sons || 0) + 1;  // إضافة الأب (أبو الأحفاد)
-        
-            // 2. حساب نصيب الأب في مسألة غير عائلة (دون تطبيق العول)
-            //    نستخدم دوال البرنامج ولكن مع تجاهل العول (نحسب النسب الأصلية)
-            let heirs = [];
-            let hasChild = (tempParams.sons + tempParams.daughters) > 0;
-
-            // الزوج/الزوجة
-            if (tempParams.spouseType === 'husband') heirs.push({ id: 'husband', ratio: hasChild ? 1/4 : 1/2, isSpouse: true });
-            else if (tempParams.spouseType === 'wife') heirs.push({ id: 'wife', ratio: hasChild ? 1/8 : 1/4, isSpouse: true });
-
-            // الأب
-            if (tempParams.father) heirs.push({ id: 'father', ratio: hasChild ? 1/6 : null, isResiduary: !hasChild });
-
-            // الأم
-            if (tempParams.mother) {
-                let hasSiblings = (tempParams.brothersExist && tempParams.brothersCount > 0) || (tempParams.sistersType !== 'none' && tempParams.sistersCount > 0);
-                heirs.push({ id: 'mother', ratio: (hasChild || hasSiblings) ? 1/6 : 1/3 });
-            }
-
-            // البنات (فرض)
-            if (tempParams.daughters > 0 && tempParams.sons === 0) {
-                heirs.push({ id: 'daughters', ratio: tempParams.daughters === 1 ? 1/2 : 2/3, count: tempParams.daughters });
-            }
-
-            // الأبناء (الذكور) - نضيف الأب المتوفى هنا
-            heirs.push({ id: 'sons', count: tempParams.sons, isResiduary: true });
-
-            // حساب نصيب الأب من خلال توزيع التركة بدون عول
-            // أولاً: حساب مجموع الفروض
-            let totalFractions = 0;
-            let fractionHeirs = heirs.filter(h => h.ratio !== undefined && typeof h.ratio === 'number');
-            for (let h of fractionHeirs) totalFractions += h.ratio;
-
-            let residue = 1 - totalFractions;
-            if (residue < 0) residue = 0;  // العول سيحدث لاحقاً، لكننا نحتاج نصيب الأب قبل العول
-
-            // توزيع الباقي على العصبات (الأبناء)
-            let sonShare = 0;
-            if (residue > 0) {
-                let totalShares = (tempParams.sons * 2) + (tempParams.daughters * 1);
-                let perShare = residue / totalShares;
-                sonShare = perShare * 2;  // لكل ابن
-            }
-
-            let deceasedSonShareValue = sonShare * totalWealth;
-            let oneThirdWealth = totalWealth / 3;
-            let mandatoryAmount = Math.min(deceasedSonShareValue, oneThirdWealth);
-            if (mandatoryAmount < 0.01) mandatoryAmount = 0;
-
-            return {
-                amount: mandatoryAmount,
-                grandsonsCount: grandsonsCount,
-                deceasedSonShare: deceasedSonShareValue
-            };
+        else {
+            statusMsg = '📌 مسألة مستقيمة: تم توزيع التركة كاملة.';
         }
-    
-    
+        // ... باقي الكود كما هو ...
 
-        // 6. دالة توليد الأسباب وبيان حالة المسألة
-        function generateReasonsAndStatus(shares, params, isAwl, isRad) {
-            let statusMsg = '';
-            if(isAwl) statusMsg = '⚠️ عول: عالت المسألة، تم توزيع التركة بنسبة العول.';
-            else if(isRad) statusMsg = '✅ رد: رُدَّ الباقي على أصحاب الفروض (عدا الزوجين).';
-            else statusMsg = '📌 مسألة مستقيمة: تم توزيع التركة كاملة.';
+        // دوال مساعدة للتحقق من وجود أنواع معينة من العصبات
+        const hasFullBrother = shares.some(s => s.id === 'brothers' && (s.amount > 0 || s.ratio === 'عصبة'));
+        const hasPaternalBrother = shares.some(s => s.id === 'brothers_paternal' && (s.amount > 0 || s.ratio === 'عصبة'));
+        const hasAnyBrother = hasFullBrother || hasPaternalBrother;
 
-            for(let s of shares) {
-                // ========== الزوج ==========
-                if(s.id === 'husband') {
-                    s.reason = params.sons + params.daughters > 0 ? 'فرض: الربع' : 'فرض: النصف';
+        for(let s of shares) {
+            // ========== الزوج ==========
+            if(s.id === 'husband') {
+                s.reason = params.sons + params.daughters > 0 ? 'فرض: الربع' : 'فرض: النصف';
+            }
+
+            // ========== الزوجة ==========
+            else if(s.id === 'wife') {
+                s.reason = params.sons + params.daughters > 0 ? 'فرض: الثمن' : 'فرض: الربع';
+            }
+                //     التعديل الاول  ----------------------------------
+            
+            else if(s.id === 'husband') {
+            if (params.sons + params.daughters > 0) {
+                s.reason = 'فرض: الربع';
+            } else {
+                // التحقق من عدم وجود وارث آخر
+                let hasOtherHeirs = (params.sons + params.daughters + (params.father ? 1 : 0) + (params.mother ? 1 : 0) + 
+                                    params.brothersFullCount + params.brothersPaternalCount + params.sistersFullCount + 
+                                    params.sistersPaternalCount + params.maternalSiblingsCount) > 0;
+                s.reason = hasOtherHeirs ? 'فرض: النصف' : 'فرض: النصف (مع الرد)';
+            }
+        }
+
+            // ========== الأب ==========
+            else if(s.id === 'father') {
+                s.reason = (typeof s.ratio === 'number' && s.ratio === 1/6) ? 'فرض: السدس' : 'عصبة';
+            }
+
+            // ========== الأم ==========
+            else if(s.id === 'mother') {
+                s.reason = 'فرض: السدس أو الثلث';
+            }
+
+            // ========== الجد ==========
+            else if(s.id === 'grandfather') {
+                s.reason = (typeof s.ratio === 'number' && s.ratio === 1/6) ? 'فرض: السدس' : 'عصبة';
+            }
+
+            // ========== الجدة ==========
+            else if(s.id === 'grandmother') {
+                s.reason = 'فرض: السدس';
+            }
+
+            // ========== الأبناء ==========
+            else if(s.id === 'sons') {
+                s.reason = (params.daughters > 0) ? 'عصبة بالغير (مع البنات)' : 'عصبة بالنفس';
+            }
+
+            // ========== البنات ==========
+            else if(s.id === 'daughters') {
+                if(s.type === 'daughter') {
+                    s.reason = (s.count === 1) ? 'فرض: النصف' : 'فرض: الثلثان';
+                } else if(s.type === 'daughter_with_brother') {
+                    s.reason = 'عصبة بالغير (مع الأخ)';
                 }
+            }
 
-                // ========== الزوجة ==========
-                else if(s.id === 'wife') {
-                    s.reason = params.sons + params.daughters > 0 ? 'فرض: الثمن' : 'فرض: الربع';
+            // ========== بنات الابن ==========
+            else if(s.id === 'granddaughters') {
+                if(s.type === 'granddaughter') {
+                    s.reason = (s.count === 1) ? 'فرض: النصف' : 'فرض: الثلثان';
+                } else if(s.type === 'granddaughter_with_one_daughter') {
+                    s.reason = 'فرض: السدس (تكملة الثلثين)';
                 }
+            }
 
-                // ========== الأب ==========
-                else if(s.id === 'father') {
-                    s.reason = (typeof s.ratio === 'number' && s.ratio === 1/6) ? 'فرض: السدس' : 'عصبة';
-                }
-
-                // ========== الأم ==========
-                else if(s.id === 'mother') {
-                    s.reason = 'فرض: السدس أو الثلث';
-                }
-
-                // ========== الجد ==========
-                else if(s.id === 'grandfather') {
-                    s.reason = (typeof s.ratio === 'number' && s.ratio === 1/6) ? 'فرض: السدس' : 'عصبة';
-                }
-
-                // ========== الجدة ==========
-                else if(s.id === 'grandmother') {
+            // ========== الإخوة والأخوات لأم ==========
+            else if(s.id === 'maternalSiblings') {
+                if (s.count === 1) {
                     s.reason = 'فرض: السدس';
-                }
-
-                // ========== الأبناء (الذكور) - الفحص بالاسم أيضاً ==========
-                else if(s.id === 'sons' || s.name === 'الابن' || s.name === 'الأبناء' || (s.name && s.name.includes('الابن'))) {
-                    if (params.daughters > 0) {
-                        s.reason = 'عصبة بالغير (مع البنات)';
-                    } else {
-                        s.reason = 'عصبة بالنفس';
-                    }
-                }
-
-                // ========== البنات ==========
-                else if(s.id === 'daughters') {
-                    if(s.type === 'daughter') {
-                        s.reason = (s.count === 1) ? 'فرض: النصف' : 'فرض: الثلثان';
-                    } else if(s.type === 'daughter_with_brother') {
-                        s.reason = 'عصبة بالغير (مع الأخ)';
-                    }
-                }
-
-                // ========== بنات الابن ==========
-                else if(s.id === 'granddaughters') {
-                    if(s.type === 'granddaughter') {
-                        s.reason = (s.count === 1) ? 'فرض: النصف' : 'فرض: الثلثان';
-                    } else if(s.type === 'granddaughter_with_one_daughter') {
-                        s.reason = 'فرض: السدس (تكملة الثلثين)';
-                    }
-                }
-
-            
-
-                // ========== الأخوات ==========
-            
-
-            
-                else if(s.id === 'sisters') {
-                    // التحقق من وجود الأخ في shares (بغض النظر عن قيمة ratio)
-                    let hasBrotherInShares = shares.some(sh => sh.id === 'brothers');
-
-                    if(hasBrotherInShares) {
-                        s.reason = 'عصبة بالغير (مع الأخ)';
-                    } else if(params.daughters > 0 && params.sons === 0) {
-                        s.reason = 'عصبة بالغير (مع البنت)';
-                    } else {
-                        s.reason = (s.count === 1) ? 'فرض: النصف' : 'فرض: الثلثان';
+                } else {
+                    s.reason = 'فرض: الثلث (بالتساوي بين الذكر والأنثى)';
                 }
             }
-            
-            
 
+            // ========== الأخوات الشقيقات ==========
+            else if(s.id === 'sisters') {
+                if (hasFullBrother) {
+                    s.reason = 'عصبة بالغير (مع الأخ الشقيق)';
+                } else if(params.daughters > 0 && params.sons === 0) {
+                    s.reason = 'عصبة بالغير (مع البنت)';
+                } else {
+                    s.reason = (s.count === 1) ? 'فرض: النصف' : 'فرض: الثلثان';
+                }
+            }
 
-
-            // ========== الإخوة الذكور ==========
+            // ========== الإخوة الأشقاء ==========
             else if(s.id === 'brothers') {
-                let hasSistersInShares = shares.some(sh => sh.id === 'sisters' && (sh.amount > 0 || sh.ratio === 'عصبة' || typeof sh.ratio === 'number'));
-
                 if (params.daughters > 0 && params.sons === 0) {
                     s.reason = 'عصبة بالغير (مع البنت)';
-                } 
-                else if (hasSistersInShares) {
-                    s.reason = 'عصبة بالغير (مع الأخوات)';
+                } else if (params.sistersFullCount > 0) {
+                    s.reason = 'عصبة بالغير (مع الأخوات الشقيقات)';
+                } else {
+                    s.reason = 'عصبة بالنفس';
                 }
-                else {
+            }
+
+            // ========== الأخوات لأب ==========
+            else if(s.id === 'sisters_paternal') {
+                // التحقق من وجود أخ شقيق أو أخ لأب
+                if (hasFullBrother) {
+                    s.reason = 'عصبة بالغير (مع الأخ الشقيق)';
+                } else if (hasPaternalBrother) {
+                    s.reason = 'عصبة بالغير (مع الأخ لأب)';
+                } else if (params.daughters > 0 && params.sons === 0) {
+                    s.reason = 'عصبة بالغير (مع البنت)';
+                } else {
+                    // حالة خاصة: إذا وجدت أخت شقيقة واحدة ولا يوجد أخ لأب، تأخذ السدس
+                    if (params.sistersFullCount === 1 && params.brothersPaternalCount === 0) {
+                        s.reason = 'فرض: السدس (تكملة ثلثي الشقيقات)';
+                    } else {
+                        s.reason = (s.count === 1) ? 'فرض: النصف' : 'فرض: الثلثان';
+                    }
+                }
+            }
+
+            // ========== الإخوة لأب ==========
+            else if(s.id === 'brothers_paternal') {
+                if (params.daughters > 0 && params.sons === 0) {
+                    s.reason = 'عصبة بالغير (مع البنت)';
+                } else if (params.sistersPaternalCount > 0) {
+                    s.reason = 'عصبة بالغير (مع الأخوات لأب)';
+                } else {
                     s.reason = 'عصبة بالنفس';
                 }
             }
@@ -1134,36 +1303,22 @@
             else if(s.isTreasury) {
                 s.reason = 'فائض لا وارث له';
             }
-    
-            // ========== افتراضي ==========
-            else {
-                // محاولة التعرف على الأبناء من خلال الاسم إذا فشل id
-                if(s.name === 'الابن' || s.name === 'الأبناء' || (s.name && s.name.includes('ابن'))) {
-                    if (params.daughters > 0) {
-                        s.reason = 'عصبة بالغير (مع البنات)';
-                    } else {
-                        s.reason = 'عصبة بالنفس';
-                    }
-                } else {
-                    s.reason = 'مستحق';
-                }
-            }
-            // معالجة الوصية الواجبة (إذا لم تكن قد عولجت سابقاً)
-            if(s.isWill || s.id === 'obligatoryWill') {
+
+            // ========== الوصية الواجبة ==========
+            else if(s.isWill || s.id === 'obligatoryWill') {
                 s.reason = s.reason || 'وصية واجبة';
             }
+
+            // ========== افتراضي (لأي حالة أخرى) ==========
+            else {
+                s.reason = 'مستحق';
+            }
         }
-            
-            return { statusMsg };
+        return { statusMsg };
+    }
 
-        }
-
-   
-
-
-
-
-    // الدالة الرئيسية الشاملة
+    
+     //  8.0  الدالة الرئيسية الشاملة (النسخة المعدلة)
     function computeFullInheritance() {
         let totalWealth = parseFloat(document.getElementById('estateValue').value);
         if(isNaN(totalWealth) || totalWealth <= 0) {
@@ -1172,9 +1327,12 @@
             return;
         }
         document.getElementById('totalAmountDisplay').innerText = totalWealth.toLocaleString();
+
+    
         
-        // جمع المعاملات
+        // ========== جمع المعاملات (بالمتغيرات الجديدة) ==========
         let params = {
+            // الأساسيات
             spouseType: document.getElementById('spouseSelect').value,
             sons: parseInt(document.getElementById('sonsCount').value) || 0,
             daughters: parseInt(document.getElementById('daughtersCount').value) || 0,
@@ -1183,26 +1341,24 @@
             mother: document.getElementById('motherAlive').checked,
             grandfather: document.getElementById('grandFatherAlive').checked,
             grandmother: document.getElementById('grandMotherAlive').checked,
-            sistersType: document.querySelector('input[name="sistersType"]:checked').value,
-            sistersCount: parseInt(document.getElementById('sistersCount').value) || 0,
-            brothersExist: document.getElementById('brothersExist').checked,
-            brothersCount: parseInt(document.getElementById('brothersCount').value) || 0,
+
+            // ========== المتغيرات الجديدة للإخوة والأخوات ==========
+            sistersFullCount: parseInt(document.getElementById('sistersFullCount')?.value) || 0,
+            sistersPaternalCount: parseInt(document.getElementById('sistersPaternalCount')?.value) || 0,
+            brothersFullCount: parseInt(document.getElementById('brothersFullCount')?.value) || 0,
+            brothersPaternalCount: parseInt(document.getElementById('brothersPaternalCount')?.value) || 0,
+            maternalSiblingsCount: parseInt(document.getElementById('maternalSiblingsCount')?.value) || 0,
+
+            // ========== العصبات البعيدة ==========
             uncleExist: document.getElementById('uncleExist').checked,
             cousinExist: document.getElementById('cousinExist').checked,
             maternalUncleExist: document.getElementById('maternalUncleExist').checked,
         };
-    
-        //  تم اضافة دالة الوصية الواجبة هنا     -----
-        // حساب الوصية الواجبة (بدون عول)
+
+        // حساب الوصية الواجبة
         let obligatoryWill = calculateObligatoryWill(params, totalWealth);
         let mandatoryWillAmount = obligatoryWill.amount;
-        //let remainingAfterWill = totalWealth - mandatoryWillAmount; 
-        
-        //                   مضاف جديد 
         let remainingAfterWill = totalWealth - mandatoryWillAmount;
-        //shares = distributeResidue(shares, remainingAfterWill, params);  // ✅ صحيح
-        
-        //  اضافة تعديل عرض سبب الاستحقاق للوصية الواجبة  --------
 
         // إنشاء قائمة الوصية الواجبة للعرض
         let willHeirs = [];
@@ -1210,15 +1366,12 @@
             let eachAmount = mandatoryWillAmount / obligatoryWill.grandsonsCount;
             let oneThirdWealth = totalWealth / 3;
             let isReducedByThird = (obligatoryWill.deceasedSonShare > oneThirdWealth);
-            
+
             for (let i = 0; i < obligatoryWill.grandsonsCount; i++) {
-                let reasonText = '';
-                if (isReducedByThird) {
-                    reasonText = `وصية واجبة - نصيب الأب المتوفى (${obligatoryWill.deceasedSonShare.toFixed(2)}، خُفض إلى ثلث التركة ${oneThirdWealth.toFixed(2)})`;
-                } else {
-                    reasonText = `وصية واجبة - نصيب الأب المتوفى (${obligatoryWill.deceasedSonShare.toFixed(2)}، لا يتجاوز ثلث التركة)`;
-                }
-                
+                let reasonText = isReducedByThird 
+                    ? `وصية واجبة - نصيب الأب المتوفى (${obligatoryWill.deceasedSonShare.toFixed(2)}، خُفض إلى ثلث التركة ${oneThirdWealth.toFixed(2)})`
+                    : `وصية واجبة - نصيب الأب المتوفى (${obligatoryWill.deceasedSonShare.toFixed(2)}، لا يتجاوز ثلث التركة)`;
+
                 willHeirs.push({
                     id: 'obligatoryWill',
                     name: `ابن الابن المتوفى (${i+1})`,
@@ -1229,13 +1382,10 @@
                 });
             }
         }
-        
 
         // 1. حجب
         let { heirs, blocked } = applyHajb(params);
-       
-       
-        //  تم اضافة الخزانة العامة هنا   //
+
         // إذا لم يوجد أي وارث، نضيف الخزانة العامة
         if (heirs.length === 0) {
             heirs.push({
@@ -1248,132 +1398,129 @@
         }
 
         // 2. حساب الأنصبة الأولية
-        let shares = calculateShares(heirs, params, remainingAfterWill);  // ✅ السطر الأول
-         // 3. العول
-        let { isAwl } = applyAwl(shares);  // ✅ السطر الثاني
-         // 4. الرد
-        let isRad = applyRad(shares, remainingAfterWill, params.spouseType !== 'none');  // ✅ السطر الثالث
-           
+        let shares = calculateShares(heirs, params, remainingAfterWill);
+
+        // 3. العول
+        let { isAwl } = applyAwl(shares);
+
+        // 4. الرد
+        let isRad = applyRad(shares, remainingAfterWill);
+
         // 5. توزيع العصبات
-        shares = distributeResidue(shares, remainingAfterWill, params);  // ✅ السطر الرابع
+        shares = distributeResidue(shares, remainingAfterWill, params);
 
         // 6. الأسباب والحالة
         let { statusMsg } = generateReasonsAndStatus(shares, params, isAwl, isRad);
-        
-        // تحويل النسب إلى مبالغ
- 
-        // الكود الصحيح (يستخدم remainingAfterWill للورثة)
 
+        // تحويل النسب إلى مبالغ
         for(let s of shares) {
-            if(typeof s.ratio === 'number') s.amount = s.ratio * remainingAfterWill;  // ✅ مهم جداً
-            else if(s.ratio === 'عصبة' && s.amount === undefined) s.amount = 0;
-            s.percent = (s.amount / totalWealth * 100).toFixed(2);  //    النسبة من التركة الاصلية 
+            if(typeof s.ratio === 'number') {
+                s.amount = s.ratio * remainingAfterWill;
+            } else if(s.ratio === 'عصبة' && s.amount === undefined) {
+                s.amount = 0;
+            }
+            s.percent = (s.amount / totalWealth * 100).toFixed(2);
         }
 
-
-        // ========== هـنـا ==========
         // دمج الوصية الواجبة مع الورثة الآخرين
         let allHeirsForDisplay = [...willHeirs, ...shares];
-        // ==========================
 
-        // دمج الوصية الواجبة مع الورث
         // عرض الجدول
         let html = '';
         for(let h of allHeirsForDisplay) {
             if(h.amount > 0.01 || h.isTreasury) {
                 html += `<tr>
-                              <td>${h.name}${h.count ? ` (${h.count})` : ''}${h.isWill ? ' (وصية واجبة)' : ''}</td>
-                              <td>${h.reason || 'مستحق'}</td>
-                              <td>${h.percent}%</td>
-                              <td>${h.amount.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
-                          </tr>`;
+                            <td>${h.name}${h.count ? ` (${h.count})` : ''}${h.isWill ? ' (وصية واجبة)' : ''}</td>
+                            <td>${h.reason || 'مستحق'}</td>
+                            <td>${h.percent}%</td>
+                            <td>${h.amount.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
+                         </tr>`;
             }
         }
-        
-        // حساب المجموع الكلي (الورثة + الوصية الواجبة)
+
+        // حساب المجموع الكلي
         let totalDist = shares.reduce((sum, h) => sum + (h.amount || 0), 0);
         let totalWill = willHeirs.reduce((sum, h) => sum + (h.amount || 0), 0);
         let totalAll = totalDist + totalWill;
-        
+
         html += `<tr style="background:#d4af37; font-weight:bold;">
                     <td colspan="3">المجموع الكلي</td>
                     <td>${totalAll.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
                  </tr>`;
-        
+             
         document.getElementById('heirsTableBody').innerHTML = html;
         document.getElementById('caseStatus').innerHTML = `<p>${statusMsg}</p>`;
-
+             
+        // عرض المحجوبين
         let blockedDiv = document.getElementById('blockedInfo');
-        if(blocked.length > 0) {
+        if(blocked && blocked.length > 0) {
             blockedDiv.style.display = 'block';
             blockedDiv.innerHTML = '<strong>🚫 المحجوبون:</strong><br>' + blocked.join('<br>');
         } else {
             blockedDiv.style.display = 'none';
         }
-       
-        showMessage('✅ تم حساب التركة بنجاح');
 
-        
-    
+        showMessage('✅ تم حساب التركة بنجاح');
     }
 
 
-    // ربط الأزرار
-    document.getElementById('calculateBtn').addEventListener('click', computeFullInheritance);
-    document.getElementById('resetBtn').addEventListener('click', () => {
-        document.getElementById('estateValue').value = '3600000';
-        document.getElementById('spouseSelect').value = 'husband';
-        document.getElementById('sonsCount').value = '0';
-        document.getElementById('daughtersCount').value = '1';
-        document.getElementById('grandDaughtersCount').value = '0';
-        document.getElementById('fatherAlive').checked = false;
-        document.getElementById('motherAlive').checked = false;
-        document.getElementById('grandFatherAlive').checked = false;
-        document.getElementById('grandMotherAlive').checked = false;
-        document.querySelector('input[name="sistersType"][value="none"]').checked = true;
-        document.getElementById('brothersExist').checked = false;
-        document.getElementById('brothersCount').value = '0';
-        document.getElementById('uncleExist').checked = false;
-        document.getElementById('cousinExist').checked = false;
-        document.getElementById('maternalUncleExist').checked = false;
-        document.getElementById('sistersCountContainer').style.display = 'none';
-        computeFullInheritance();
-    });
+    
+            // ربط الأزرار
+       
+        document.getElementById('calculateBtn').addEventListener('click' , computeFullInheritance);  
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            document.getElementById('estateValue').value = '360000';
+            document.getElementById('spouseSelect').value = 'husband';
+            document.getElementById('sonsCount').value = '0';
+            document.getElementById('daughtersCount').value = '0';
+            document.getElementById('grandDaughtersCount').value = '0';
+            document.getElementById('fatherAlive').checked = false;
+            document.getElementById('motherAlive').checked = false;
+            document.getElementById('grandFatherAlive').checked = false;
+            document.getElementById('grandMotherAlive').checked = false;
+            document.getElementById('sistersFullCount').value = '0';
+            document.getElementById('sistersPaternalCount').value = '0';
+            document.getElementById('brothersFullCount').value = '0';
+            document.getElementById('brothersPaternalCount').value = '0';
+            document.getElementById('maternalSiblingsCount').value = '0';
+            document.getElementById('uncleExist').checked = false;
+            document.getElementById('cousinExist').checked = false;
+            document.getElementById('maternalUncleExist').checked = false;
+           
+            document.getElementById('heirsTableBody').innerHTML = '<tr><td colspan="4">أدخل البيانات ثم اضغط احسب</td></tr>';
+            document.getElementById('caseStatus').innerHTML = '';
+            document.getElementById('totalAmountDisplay').innerText = '0';
+            document.getElementById('blockedInfo').style.display = 'none';
+            document.getElementById('blockedInfo').innerHTML = '';
+            document.getElementById('spouseSelect').value = 'none ';
+            
+            
+            
+            //computeFullInheritance();
+        });
+        
         document.getElementById('printBtn').addEventListener('click', () => window.print());
-        
-        // دالة إظهار/إخفاء عدد الأخوات
-        
-    function toggleSisters() {
-        const selected = document.querySelector('input[name="sistersType"]:checked');
-        const container = document.getElementById('sistersCountContainer');
-        if (container) {
-            container.style.display = (selected && selected.value !== 'none') ? 'block' : 'none';
-        }
-        }
-        // ثم بعد تعريف الدالة، قم بربط الأحداث مرة واحدة فقط:
-        const sistersRadios = document.querySelectorAll('input[name="sistersType"]');
-        sistersRadios.forEach(radio => radio.addEventListener('change', toggleSisters));
-        toggleSisters(); // استدعاء أولي 
-        
-   
-        // تشغيل أولي
-        computeFullInheritance();
-})
-    ();
 
+        // استدعاء أولي للحساب
+        computeFullInheritance();
+
+    })(); 
+    
+        // نهاية الـ IIFE
+         //computeFullInheritance();
         function showMessage(msg) {
-            var toast = document.getElementById('toastMsg');
+            let toast = document.getElementById('toastMsg');
             if (!toast) return;
             toast.textContent = msg || '✅ تم حساب التركة بنجاح';
             toast.style.display = 'block';
-            setTimeout(function() {
-                toast.style.display = 'none';
-            }, 3000);
+            setTimeout(function() { toast.style.display = 'none'; }, 1000);
         }
 
 </script>
+<!-- Toast message inside body -->
+     <div id="toastMsg" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e5631; color: white; padding: 12px 24px; border-radius: 8px; font-size: 16px; z-index: 9999; display: none; white-space: nowrap; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        ✅ تم حساب التركة بنجاح
+    </div>    
 </body>
-<div id="toastMsg" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e5631; color: white; padding: 12px 24px; border-radius: 8px; font-size: 16px; z-index: 9999; display: none; white-space: nowrap; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-    ✅ تم حساب التركة بنجاح
-</div>
 </html>
+
